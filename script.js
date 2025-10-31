@@ -14,12 +14,12 @@ const foods = [
 // STEP 2: SELECT DOM ELEMENTS (students must do it)
 // =========================================================
 // TODO: select
-// - foodsContainer
-// - cartContainer
-// - subtotalDisplay
-// - vatDisplay
-// - totalDisplay
-// - vatInput
+let foodsContainer = document.getElementById('foodsContainer');
+let cartContainer = document.getElementById('cartContainer');
+let subtotalDisplay = document.getElementById('subtotal');
+let vatDisplay = document.getElementById('vat');
+let totalDisplay = document.getElementById('total');
+let vatInput = document.getElementById('vatInput');
 //
 // EXAMPLE:
 // const foodsContainer = document.getElementById('foodsContainer');
@@ -38,11 +38,17 @@ function renderFoods() {
     // TODO:
     // 1. clear foodsContainer
     // 2. loop over foods array
+    cartContainer.innerHTML = ``;
+    for (let food of foods) {
+        const div = `<div id="${food.id}" class="food-item" onclick="addToCart(${food.id})">${food.name} ${food.price}</div>`
+        foodsContainer.innerHTML += `${div}`;
+    }
     // 3. for each food: create a div.food-item
     // 4. set innerHTML with name + price
     // 5. add click listener → addToCart(food)
     // 6. append to foodsContainer
 }
+renderFoods();
 
 // =========================================================
 // STEP 5: ADD TO CART
@@ -54,6 +60,13 @@ function addToCart(food) {
     // 3. if no → push new object with quantity = 1
     // 4. call renderCart()
     // 5. call updateTotals()
+    for (let foo of foods) {
+        if (foo.id == food) {
+            cart.push(foo);
+        }
+    }
+    renderCart();
+
 }
 
 // =========================================================
@@ -63,6 +76,17 @@ function renderCart() {
     // TODO:
     // 1. clear cartContainer
     // 2. if cart empty → show "Your cart is empty"
+    cartContainer.innerHTML="";
+    if (cart.length == 0) {
+        console.log("Your cart is empty");
+    } else {
+        for (let fo of cart){
+            const div = document.createElement("div");
+            div.className = "cart-item"
+            div.innerHTML = `<div><p class="cart-item-name">${fo.name}</p> <p class="cart-item-price">${fo.price}</p></div>`;
+            cartContainer.append(div);
+        }
+    }
     // 3. else → loop over cart
     //    - create cart item div
     //    - show name, price, qty, line total
@@ -104,7 +128,7 @@ function updateTotals() {
 
 
 // =========================================================
-// BONUS : Remise par Coupon (Coupon Discount System) 
+// BONUS : Remise par Coupon (Coupon Discount System)
 // =========================================================
 //
 // On a un tableau de coupons côté JS.
